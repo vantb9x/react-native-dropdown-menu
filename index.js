@@ -1,7 +1,7 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {View, Text, Image, TouchableOpacity, ScrollView, Animated, Easing, StyleSheet} from 'react-native';
+import {View, Text, TouchableHighlight, Image, TouchableOpacity, ScrollView, Animated, Easing, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 
 class DropdownMenu extends Component {
@@ -45,7 +45,9 @@ class DropdownMenu extends Component {
     </Text>
       <Image
       source={checkImage}
-      style={{tintColor: this.props.activityTintColor ? this.props.activityTintColor : this.defaultConfig.activityTintColor}} />
+      style={{tintColor: this.props.activityTintColor ? this.props.activityTintColor : this.defaultConfig.activityTintColor, width: 15, height: 15}} 
+        resizeMode={'contain'}
+      />
     </View>
     );
     } else {
@@ -76,8 +78,7 @@ class DropdownMenu extends Component {
     <TouchableOpacity onPress={() => this.openOrClosePanel(this.state.activityIndex)} activeOpacity={1} style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}>
     <View style={{opacity: 0.4, backgroundColor: 'black', flex: 1 }} />
     </TouchableOpacity>
-
-      <ScrollView style={[{position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: 'white'}, heightStyle]} >
+      <ScrollView style={[{position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: 'white'}, heightStyle, this.props.panelStyle]} >
       {
         currentTitles.map((title, index) =>
         <TouchableOpacity key={index} activeOpacity={1} style={{flex: 1, height: 44}} onPress={this.itemOnPress.bind(this, index)} >
@@ -167,8 +168,8 @@ class DropdownMenu extends Component {
       <Animated.Image
     source={icon}
     style={{
-      width:6,
-        height:4,
+      width:8,
+        height:8,
         marginLeft: 8,
         tintColor: (index === this.state.activityIndex) ? (this.props.activityTintColor ? this.props.activityTintColor : this.defaultConfig.activityTintColor) : (this.props.tintColor ? this.props.tintColor : this.defaultConfig.tintColor),
         transform: [{
@@ -177,7 +178,7 @@ class DropdownMenu extends Component {
           outputRange: ['0deg', '360deg']
         })
       }]
-    }} />
+    }} resizeMode={'contain'}/>
   );
   }
 
@@ -194,7 +195,7 @@ class DropdownMenu extends Component {
       activeOpacity={1}
       onPress={this.openOrClosePanel.bind(this, index)}
       key={index}
-      style={{flex: 1, height: 48, alignItems: "center", justifyContent: "center"}} >
+      style={{flex: 1, height: 48, alignItems: "center", justifyContent: "center"}} disable={this.props.placeHolder[index] == "" ? true : false}>
     <View style={{flexDirection: 'row', alignItems: "center", justifyContent: "center"}} >
     <Text
       style={[
@@ -205,9 +206,10 @@ class DropdownMenu extends Component {
           :
           (this.props.tintColor ? this.props.tintColor : this.defaultConfig.tintColor)}
     ]} >
-      {rows[this.state.selectIndex[index]]}
+      {/* {rows[this.state.selectIndex[index]]} */}
+      {this.props.placeHolder[index]}
     </Text>
-    {this.renderDropDownArrow(index)}
+    {this.props.placeHolder[index] == "" ? null : this.renderDropDownArrow(index)}
     </View>
     </TouchableOpacity>
     )
